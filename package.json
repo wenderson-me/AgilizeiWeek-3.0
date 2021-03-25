@@ -1,5 +1,5 @@
 {
-  "name": "AgilezeiWeek-3.0",
+  "name": "AgilizeiWeek-3.0",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,15 +10,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/wenderson-me/AgilezeiWeek-3.0.git"
+    "url": "git+https://github.com/wenderson-me/AgilizeiWeek-3.0.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/wenderson-me/AgilezeiWeek-3.0/issues"
+    "url": "https://github.com/wenderson-me/AgilizeiWeek-3.0/issues"
   },
-  "homepage": "https://github.com/wenderson-me/AgilezeiWeek-3.0#readme",
+  "homepage": "https://github.com/wenderson-me/AgilizeiWeek-3.0#readme",
   "devDependencies": {
     "cypress": "^6.8.0"
   }
