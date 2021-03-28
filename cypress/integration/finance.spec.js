@@ -16,7 +16,7 @@ context('Finances', () => {
     beforeEach(() => {
 
       cy.visit('https://devfinance-agilizei.netlify.app')
-      cy.viewport(411, 582)
+      // cy.viewport(411, 582)
       cy.get('#data-table tbody tr').should('have.length', 0) // tabela vazia
     })
 
@@ -82,4 +82,48 @@ context('Finances', () => {
 
     cy.get('#data-table tbody tr').should('have.length', 0)
   });
-})
+
+
+  it.only('Validar saldo com varias transações', () => {
+
+  const entrada = 'Total'
+    const saida = 'Kindle'
+
+    cy.get('#transaction .button').click()
+    cy.get('#description').type(entrada)
+    cy.get('[name=amount]').type(127)
+    cy.get('[type=date]').type('2021-03-24')
+    cy.get('button').contains('Salvar').click()
+
+    cy.get('#transaction .button').click()
+    cy.get('#description').type(saida)
+    cy.get('[name=amount]').type(-61)
+    cy.get('[type=date]').type('2021-03-24')
+    cy.get('button').contains('Salvar').click()
+
+
+    
+    // capturar as linhas com as transações e colunas com valores
+    // capturar textos dessas colunas
+    // formatar esses valores das linhas
+    
+    // capturar o texto do total
+    // comparar o somatorio de entradas e despesas com o total
+
+    cy.get('#data-table tbody tr')
+    .each(($el, index, $list) => {
+
+        cy.get($el).find('td.income, td.expense')
+          .invoke('text').then(text => {
+            cy.log(text)
+          })
+    })
+
+
+  });
+
+
+
+
+
+  });
