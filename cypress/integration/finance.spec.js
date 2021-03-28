@@ -1,5 +1,5 @@
 /// <reference types="cypress" />
-import { format } from "../support/utils";
+import { format, prepareLocalStorage } from "../support/utils";
 
 /// cy.viewport
 /// arquivos de config
@@ -14,9 +14,13 @@ context("Finances", () => {
   // afterEach -> depois de cada testes
 
   beforeEach(() => {
-    cy.visit("https://devfinance-agilizei.netlify.app");
+    cy.visit("https://devfinance-agilizei.netlify.app", {
+      onBeforeLoad: (win) => {
+        prepareLocalStorage(win);
+      },
+    });
     // cy.viewport(411, 582)
-    cy.get("#data-table tbody tr").should("have.length", 0); // tabela vazia
+    //cy.get("#data-table tbody tr").should("have.length", 0); // tabela vazia
   });
 
   it("Cadastrar entradas", () => {
@@ -31,45 +35,32 @@ context("Finances", () => {
     cy.get("[type=date]").type("2021-03-21"); //.atributos
     cy.get("button").contains("Salvar").click(); //tipo e valor
 
-    cy.get("#data-table tbody tr").should("have.length", 1);
+    cy.get("#data-table tbody tr").should("have.length", 3);
   });
 
   // Cadastrar saidas
   it("Cadastrar saidas", () => {
     cy.get("#transaction .button").click();
-    cy.get("#description").type("Presente");
+    cy.get("#description").type("Mesada");
     cy.get("[name=amount]").type(-30);
     cy.get("[type=date]").type("2021-03-30");
     cy.get("button").contains("Salvar").click();
+
+    cy.get("#data-table tbody tr").should("have.length", 3);
   });
 
   // Remover entradas e saidas
   it("Remover entradas e saidas", () => {
-    const entrada = "Total";
-    const saida = "Kindle";
-
-    cy.get("#transaction .button").click();
-    cy.get("#description").type(entrada);
-    cy.get("[name=amount]").type(100);
-    cy.get("[type=date]").type("2021-03-24");
-    cy.get("button").contains("Salvar").click();
-
-    cy.get("#transaction .button").click();
-    cy.get("#description").type(saida);
-    cy.get("[name=amount]").type(-50);
-    cy.get("[type=date]").type("2021-03-24");
-    cy.get("button").contains("Salvar").click();
-
     // exclusão 1
     cy.get("td.description") // cy.get para especificar onde procurar o conteudo
-      .contains(entrada)
+      .contains("Mesada")
       .parent()
       .find("img[onclick*=remove]")
       .click();
 
     // exclusão 2: buscar todos os irmão, e buscar o que tem img = attr
     cy.get("td.description")
-      .contains(saida)
+      .contains("Suco de Fruta")
       .siblings() // navega pelos elementos irmão
       .children("img[onclick*=remove]") // encontra o filho
       .click();
@@ -77,22 +68,7 @@ context("Finances", () => {
     cy.get("#data-table tbody tr").should("have.length", 0);
   });
 
-  it.only("Validar saldo com varias transações", () => {
-    const entrada = "Total";
-    const saida = "Kindle";
-
-    cy.get("#transaction .button").click();
-    cy.get("#description").type(entrada);
-    cy.get("[name=amount]").type(127);
-    cy.get("[type=date]").type("2021-03-24");
-    cy.get("button").contains("Salvar").click();
-
-    cy.get("#transaction .button").click();
-    cy.get("#description").type(saida);
-    cy.get("[name=amount]").type(-61);
-    cy.get("[type=date]").type("2021-03-24");
-    cy.get("button").contains("Salvar").click();
-
+  it("Validar saldo com varias transações", () => {
     // capturar as linhas com as transações e colunas com valores
     // capturar textos dessas colunas
     // formatar esses valores das linhas
