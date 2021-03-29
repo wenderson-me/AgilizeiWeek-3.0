@@ -16,7 +16,7 @@ context("Finances", () => {
   beforeEach(() => {
     cy.visit("https://devfinance-agilizei.netlify.app", {
       onBeforeLoad: (win) => {
-        prepareLocalStorage(win);
+        prepareLocalStorage(win); //localStorege util.js
       },
     });
     // cy.viewport(411, 582)
